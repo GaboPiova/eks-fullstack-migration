@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login FullStack - EKS</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f2f5; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        input { display: block; margin: 10px 0; padding: 8px; width: 200px; }
+        button { width: 100%; padding: 8px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h3>Iniciar Sesión</h3>
+        <input type="text" id="user" placeholder="Usuario">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button onclick="login()">Ingresar</button>
+        <p id="msg"></p>
+    </div>
+
+    <script>
+        async function login() {
+            const user = document.getElementById('user').value;
+            const password = document.getElementById('password').value;
+            
+            // Atento acá: usamos el nombre del servicio DNS de Kubernetes que definimos antes
+            try {
+                const response = await fetch('http://backend-service/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user, password })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('msg').innerText = "¡Ingreso Exitoso!";
+                    document.getElementById('msg').style.color = "green";
+                } else {
+                    document.getElementById('msg').innerText = data.message;
+                    document.getElementById('msg').style.color = "red";
+                }
+            } catch (err) {
+                document.getElementById('msg').innerText = "Error de conexión con la API";
+                document.getElementById('msg').style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>

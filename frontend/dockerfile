@@ -1,0 +1,8 @@
+# 1. Usamos la versión ligera de Nginx
+FROM nginx:alpine
+
+# 2. Copiamos nuestro HTML al directorio donde Nginx sirve los archivos estáticos
+COPY index.html /usr/share/nginx/html/
+
+# 3. Exponemos el puerto estándar de HTTP
+EXPOSE 80

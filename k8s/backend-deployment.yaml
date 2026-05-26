@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backend
+spec:
+  replicas: 2 # Levantamos dos pods por si uno se cae, buena práctica DevOps
+  selector:
+    matchLabels:
+      app: backend # Clave para que el Service sepa a quién apuntar
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend-container
+        image: tu-usuario-dockerhub/api-backend:v1 # <--- Reemplazar por tu imagen real
+        ports:
+        - containerPort: 3000 # El puerto en el que escucha Node.js/Express
